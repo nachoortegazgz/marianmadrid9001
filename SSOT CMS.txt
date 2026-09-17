@@ -1,0 +1,808 @@
+# Dossier técnico CMS — colecciones personalizadas
+
+> **Criterio de identificación**
+>
+> - **ID técnico:** identificador interno real de Wix.
+> - **ID público:** nombre público en español, `camelCase`, sin espacios y respetando el orden semántico del ID técnico.
+> - **Tipo de dato:** tipo CMS.
+> - **Protección:** permisos, cifrado o condición especial.
+>
+> # Directrices de nomenclatura utilizadas
+
+## 1. Colecciones
+
+| Elemento | Directriz | Ejemplo |
+|---|---|---|
+| ID técnico | Se conserva exactamente el ID real de Wix | `DatosFiscales` |
+| ID público | Nombre visible de la colección | `DATOS_FISCALES` |
+| Tipo | Colección nativa CMS personalizada | `Nativa` |
+| Apps Wix | Se excluyen del inventario personalizado | `Bookings/Services` |
+
+---
+
+## 2. Campos
+
+Cada campo se documenta con cuatro valores:
+
+```text
+ID técnico | ID público | Tipo de dato | Protección
+```
+
+### Reglas del ID técnico
+
+- No se modifica.
+- Se conserva la clave real de Wix.
+- Respeta mayúsculas y minúsculas originales.
+- Ejemplo: `businessTaxId`.
+
+### Reglas del ID público
+
+El nombre público:
+
+1. Está en español.
+2. Usa `camelCase`.
+3. Empieza en minúscula.
+4. No contiene espacios.
+5. No utiliza guiones ni guiones bajos.
+6. Mantiene el orden de términos del ID técnico.
+7. Traduce los términos sin invertirlos.
+8. Conserva siglas reconocibles cuando corresponde.
+9. Mantiene nombres técnicos establecidos como `sku`, `qr`, `sii` o `verifactu`.
+
+---
+
+## 3. Ejemplos de traducción
+
+| ID técnico | ID público correcto | Tipo |
+|---|---|---|
+| `businessName` | `negocioNombre` | `TEXT` |
+| `businessTaxId` | `negocioIdentificacionFiscal` | `TEXT` |
+| `taxIdType` | `fiscalTipoIdentificacion` | `TEXT` |
+| `invoiceSeries` | `facturaSerie` | `TEXT` |
+| `availableStaff` | `disponiblePersonal` | `MULTI_REFERENCE` |
+| `location` | `localizacion` | `REFERENCE` |
+| `locationId` | `localizacionId` | `TEXT` |
+| `serviceId` | `servicioId` | `REFERENCE` |
+| `bookingId` | `reservaId` | `TEXT` |
+| `transactionId` | `transaccionId` | `TEXT` |
+| `createdDate` | `creacionFecha` | `DATETIME` |
+| `updatedDate` | `actualizacionFecha` | `DATETIME` |
+
+---
+
+## 4. Ejemplos incorrectos
+
+| Incorrecto | Correcto | Motivo |
+|---|---|---|
+| `nombreNegocio` | `negocioNombre` | Invierte el orden original |
+| `ubicación` | `localizacion` | Lleva acento y no es `camelCase` técnico |
+| `localizacion` como ID técnico | `location` | El ID técnico de Wix no se modifica |
+| `NombreNegocio` | `negocioNombre` | Empieza con mayúscula |
+| `negocio_nombre` | `negocioNombre` | Contiene guion bajo |
+| `NIF/CIF AEAT` | `negocioIdentificacionFiscal` | Contiene espacios y formato no técnico |
+| `SERVICIOS_CATALOGO` como campo | `serviciosCatalogo` | El campo público debe ser `camelCase` |
+
+---
+
+## 5. Campos de sistema Wix
+
+| ID técnico | ID público | Tipo |
+|---|---|---|
+| `_id` | `id` | `TEXT` |
+| `_createdDate` | `creacionFecha` | `DATETIME` |
+| `_updatedDate` | `actualizacionFecha` | `DATETIME` |
+| `_owner` | `propietario` | `TEXT` |
+
+Los campos de sistema mantienen su ID técnico original y solo reciben una traducción pública para documentación.
+
+---
+
+## 6. Tipos de datos
+
+Los tipos se mantienen exactamente como los define Wix:
+
+```text
+TEXT
+NUMBER
+BOOLEAN
+DATE
+DATETIME
+IMAGE
+RICH_TEXT
+OBJECT
+ARRAY_STRING
+REFERENCE
+MULTI_REFERENCE
+```
+
+No se traducen los valores del tipo de dato.
+
+---
+
+## 7. Protección
+
+La columna de protección documenta:
+
+```text
+ADMIN
+SITE_MEMBER
+SITE_MEMBER_AUTHOR
+ANYONE
+Cifrado
+Sistema Wix
+Requerido
+```
+
+Ejemplos:
+
+| Campo | Protección |
+|---|---|
+| `businessTaxId` | `ADMIN / cifrado` |
+| `businessName` | `ADMIN / requerido` |
+| `location` en `ComplementosCatalogo` | `ANYONE` |
+| `_id` | `Sistema Wix` |
+
+---
+
+## 8. Regla especial para referencias
+
+Los campos `REFERENCE` y `MULTI_REFERENCE` conservan:
+
+- El ID técnico original.
+- El tipo Wix original.
+- La colección de destino.
+- El orden de términos en el ID público.
+
+Ejemplo:
+
+```text
+location
+→ localizacion
+→ REFERENCE
+```
+
+```text
+ServiciosCatalogo_opcionesComplementos
+→ serviciosCatalogoOpcionesComplementos
+→ MULTI_REFERENCE
+```
+
+---
+
+## 9. Regla de seguridad
+
+La nomenclatura pública no debe alterar:
+
+- El funcionamiento del código.
+- Las relaciones CMS.
+- Los IDs técnicos.
+- Los nombres de campos utilizados por Velo.
+- Los tipos de datos.
+- Los metadatos de referencias.
+
+La traducción afecta únicamente al `displayName` del campo, no a su `key` técnico.
+
+---
+
+## 1. Inventario actualizado
+
+| ID técnico | ID público | Tipo / campos | Protección |
+|---|---|---:|---|
+| `AlertasOperativas` | `ALERTAS_OPERATIVAS` | Nativa / 12 | ADMIN |
+| `AsientosContables` | `ASIENTOS_CONTABLES` | Nativa / 49 | ADMIN |
+| `AvailabilityDaysCache` | `AVAILABILITY_DAYS_CACHE` | Nativa / 7 | ADMIN |
+| `BookingsServiceSyncQueue` | `BOOKINGS_SERVICE_SYNC_QUEUE` | Nativa / 13 | ADMIN |
+| `BookingTransactions` | `BOOKING_TRANSACTIONS` | Nativa / 11 | ADMIN |
+| `CajaActualConsolidada` | `CAJA_ACTUAL` | Nativa / 25 | ADMIN |
+| `CitasF2` | `CITAS_F2` | Nativa / 19 | ADMIN |
+| `CompensacionesPendientes` | `COMPENSACIONES_PENDIENTES` | Nativa / 21 | ADMIN |
+| `ComplementosCatalogo` | `COMPLEMENTOS_CATALOGO` | Nativa / 24 | ANYONE |
+| `DatosFiscales` | `DATOS_FISCALES` | Nativa / 25 | ADMIN |
+| `ConfiguracionFiscal` | `CONFIGURACION_FISCAL` | Nativa / 27 | ADMIN |
+| `DualSlotCache` | `DUAL_SLOT_CACHE` | Nativa / 15 | ADMIN |
+| `HistoricoCierresZ` | `HISTORICO_CIERRES_Z` | Nativa / 36 | ADMIN |
+| `InventarioStockVenta` | `INVENTARIO_STOCK_VENTA` | Nativa / 21 | ADMIN |
+| `LibroAsientosContablesDetalle` | `LIBRO_ASIENTOS_CONTABLES_DETALLE` | Nativa / 91 | ADMIN |
+| `M365GraphSyncQueue` | `M365_GRAPH_SYNC_QUEUE` | Nativa / 14 | ADMIN |
+| `MapaStaff` | `MAPA_STAFF` | Nativa / 18 | ADMIN |
+| `MovimientosCajaConsolidada` | `MOVIMIENTOS_CAJA` | Nativa / 65 | ADMIN |
+| `MovimientosInventario` | `MOVIMIENTOS_INVENTARIO` | Nativa / 23 | ADMIN |
+| `ProveedoresLista` | `PROVEEDORES_LISTA` | Nativa / 12 | ADMIN |
+| `RateLimitBlocks` | `RATE_LIMIT_BLOCKS` | Nativa / 7 | ADMIN |
+| `RegistrosHorariosStaff` | `REGISTROS_HORARIOS_STAFF` | Nativa / 27 | ADMIN |
+| `ServiciosCatalogo` | `SERVICIOS_CATALOGO` | Nativa / 36 | SITE_MEMBER_AUTHOR |
+| `SlotLocks` | `SLOT_LOCKS` | Nativa / 8 | ADMIN |
+
+---
+
+## 2. Campos comunes
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `_id` | `id` | `TEXT` | Sistema Wix |
+| `_createdDate` | `creacionFecha` | `DATETIME` | Sistema Wix |
+| `_updatedDate` | `actualizacionFecha` | `DATETIME` | Sistema Wix |
+| `_owner` | `propietario` | `TEXT` | Sistema Wix |
+
+---
+
+# 3. Estructura completa de campos
+
+## `AlertasOperativas`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `transactionId` | `transaccionId` | TEXT | ADMIN |
+| `context` | `contexto` | OBJECT | ADMIN |
+| `resolvedAt` | `resueltaFecha` | DATETIME | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `message` | `mensaje` | TEXT | ADMIN |
+| `severity` | `severidad` | TEXT | ADMIN |
+| `alertType` | `alertaTipo` | TEXT | ADMIN |
+
+## `AsientosContables`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `fiscalPeriod` | `fiscalPeriodo` | TEXT | ADMIN |
+| `entryNumber` | `asientoNumero` | TEXT | ADMIN |
+| `linkedCashMovementId` | `vinculadoMovimientoCajaId` | TEXT | ADMIN |
+| `entryDescription` | `asientoDescripcion` | TEXT | ADMIN |
+| `entryDate` | `asientoFecha` | DATETIME | ADMIN |
+| `orderId` | `pedidoId` | TEXT | ADMIN |
+| `refundId` | `devolucionId` | TEXT | ADMIN |
+| `bookingId` | `reservaId` | TEXT | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `entrySignature` | `asientoFirma` | TEXT | ADMIN |
+| `entryHash` | `asientoHash` | TEXT | ADMIN |
+| `previousHash` | `anteriorHash` | TEXT | ADMIN |
+| `invoiceNumber` | `facturaNumero` | TEXT | ADMIN |
+| `paymentMethod` | `pagoMetodo` | TEXT | ADMIN |
+| `entryStatus` | `asientoEstado` | TEXT | ADMIN |
+| `entryType` | `asientoTipo` | TEXT | ADMIN |
+| `totalDocumentAmount` | `totalDocumentoImporte` | NUMBER | ADMIN |
+| `totalCredit` | `totalHaber` | NUMBER | ADMIN |
+| `totalDebit` | `totalDebe` | NUMBER | ADMIN |
+| `entryConcept` | `asientoConcepto` | TEXT | ADMIN |
+| `operationDate` | `operacionFecha` | DATETIME | ADMIN |
+| `fiscalYear` | `fiscalEjercicio` | NUMBER | ADMIN |
+| `journalEntryId` | `diarioAsientoId` | TEXT | ADMIN |
+| `fiscalOperationDate` | `fiscalOperacionFecha` | TEXT | ADMIN |
+| `operationCategory` | `operacionCategoria` | TEXT | ADMIN |
+| `operationSubcategory` | `operacionSubcategoria` | TEXT | ADMIN |
+| `currency` | `moneda` | TEXT | ADMIN |
+| `transactionId` | `transaccionId` | TEXT | ADMIN |
+| `invoiceSeries` | `facturaSerie` | TEXT | ADMIN |
+| `invoiceIssueDate` | `facturaEmisionFecha` | DATETIME | ADMIN |
+| `invoiceType` | `facturaTipo` | TEXT | ADMIN |
+| `externalReference` | `externaReferencia` | TEXT | ADMIN |
+| `rectifiedEntryId` | `rectificadoAsientoId` | TEXT | ADMIN |
+| `rectificationReason` | `rectificacionMotivo` | TEXT | ADMIN |
+| `operationalManagerId` | `operativoResponsableId` | TEXT | ADMIN |
+| `recordingMemberId` | `registroMiembroId` | TEXT | ADMIN |
+| `recordingName` | `registroNombre` | TEXT | ADMIN |
+| `costCenterId` | `costeCentroId` | TEXT | ADMIN |
+| `iaeActivityCode` | `iaeActividadCodigo` | TEXT | ADMIN |
+| `recordSource` | `registroOrigen` | TEXT | ADMIN |
+| `sourceId` | `origenId` | TEXT | ADMIN |
+| `schemaVersion` | `esquemaVersion` | TEXT | ADMIN |
+| `integrityAlgorithmVersion` | `integridadAlgoritmoVersion` | TEXT | ADMIN |
+| `registeredAt` | `registradoFecha` | DATETIME | ADMIN |
+| `operationTimeZone` | `operacionZonaHoraria` | TEXT | ADMIN |
+
+## `AvailabilityDaysCache`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `serviceId` | `servicioId` | TEXT | ADMIN |
+| `availableDays` | `disponiblesDias` | ARRAY_STRING | ADMIN |
+| `expiresAt` | `expiraFecha` | DATETIME | ADMIN |
+
+## `BookingsServiceSyncQueue`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `failedAt` | `fallidoFecha` | DATETIME | ADMIN |
+| `errorCode` | `errorCodigo` | TEXT | ADMIN |
+| `attempts` | `intentos` | NUMBER | ADMIN |
+| `completedAt` | `completadoFecha` | DATETIME | ADMIN |
+| `nextAttemptAt` | `proximoIntentoFecha` | DATETIME | ADMIN |
+| `payloadHash` | `cargaHash` | TEXT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `desiredPayload` | `deseadaCarga` | OBJECT | ADMIN |
+| `serviceId` | `servicioId` | TEXT | ADMIN |
+
+## `BookingTransactions`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `payloadHash` | `cargaHash` | TEXT | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `error` | `error` | TEXT | ADMIN |
+| `result` | `resultado` | OBJECT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `pairToken` | `parToken` | TEXT | ADMIN |
+| `transactionId` | `transaccionId` | TEXT | ADMIN |
+
+## `CajaActualConsolidada`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `cashRegisterStatus` | `cajaRegistroEstado` | TEXT | ADMIN |
+| `operationDate` | `operacionFecha` | DATE | ADMIN |
+| `openedAt` | `abiertaFecha` | DATETIME | ADMIN |
+| `closedAt` | `cerradaFecha` | DATETIME | ADMIN |
+| `lastActivityAt` | `ultimaActividadFecha` | DATETIME | ADMIN |
+| `lastMovementAt` | `ultimoMovimientoFecha` | DATETIME | ADMIN |
+| `lastMovementType` | `ultimoMovimientoTipo` | TEXT | ADMIN |
+| `cashManagementType` | `cajaGestionTipo` | TEXT | ADMIN |
+| `cashDrawerAmount` | `cajonEfectivoImporte` | NUMBER | ADMIN |
+| `cardTicketAmount` | `tarjetaTicketImporte` | NUMBER | ADMIN |
+| `voucherAmount` | `valeImporte` | NUMBER | ADMIN |
+| `onlinePaymentAmount` | `onlinePagoImporte` | NUMBER | ADMIN |
+| `bankTransferAmount` | `bancariaTransferenciaImporte` | NUMBER | ADMIN |
+| `otherPaymentAmount` | `otroPagoImporte` | NUMBER | ADMIN |
+| `onlinePendingReconciliation` | `onlinePendienteConciliacion` | NUMBER | ADMIN |
+| `openingAmount` | `aperturaImporte` | NUMBER | ADMIN |
+| `openingResponsibleMemberId` | `aperturaResponsableMiembroId` | TEXT | ADMIN |
+| `closingResponsibleMemberId` | `cierreResponsableMiembroId` | TEXT | ADMIN |
+| `versionState` | `versionEstado` | TEXT | ADMIN |
+| `stateHash` | `estadoHash` | TEXT | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+
+## `CitasF2`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `resourceId` | `recursoId` | TEXT | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `contactDetails` | `contactoDetalles` | OBJECT | ADMIN |
+| `meta` | `meta` | OBJECT | ADMIN |
+| `paymentStatus` | `pagoEstado` | TEXT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `bookingType` | `reservaTipo` | TEXT | ADMIN |
+| `dateYmd` | `fechaYmd` | TEXT | ADMIN |
+| `endDate` | `finFecha` | DATETIME | ADMIN |
+| `startDate` | `inicioFecha` | DATETIME | ADMIN |
+| `scheduleId` | `horarioId` | TEXT | ADMIN |
+| `serviceId` | `servicioId` | TEXT | ADMIN |
+| `revision` | `revision` | NUMBER | ADMIN |
+| `pairToken` | `parToken` | TEXT | ADMIN |
+| `bookingId` | `reservaId` | TEXT | ADMIN |
+
+## `CompensacionesPendientes`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `attempts` | `intentos` | NUMBER | ADMIN |
+| `nextRetryAt` | `proximoReintentoFecha` | DATETIME | ADMIN |
+| `maxAttempts` | `maximosIntentos` | NUMBER | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `lastError` | `ultimoError` | TEXT | ADMIN |
+| `alertRequired` | `alertaRequerida` | BOOLEAN | ADMIN |
+| `movementType` | `movimientoTipo` | TEXT | ADMIN |
+| `concept` | `concepto` | TEXT | ADMIN |
+| `refundId` | `devolucionId` | TEXT | ADMIN |
+| `orderId` | `pedidoId` | TEXT | ADMIN |
+| `transactionId` | `transaccionId` | TEXT | ADMIN |
+| `paymentMethod` | `pagoMetodo` | TEXT | ADMIN |
+| `amount` | `importe` | NUMBER | ADMIN |
+| `phase` | `fase` | TEXT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `bookingId` | `reservaId` | TEXT | ADMIN |
+| `kind` | `clase` | TEXT | ADMIN |
+
+## `ComplementosCatalogo`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `name` | `nombre` | TEXT | ANYONE |
+| `addOnId` | `complementoId` | TEXT | ANYONE |
+| `bookingsAddonId` | `bookingsComplementoId` | TEXT | ANYONE |
+| `bookingsGrupoAddonId` | `bookingsGrupoComplementoId` | TEXT | ANYONE |
+| `title` | `titulo` | TEXT | ANYONE |
+| `tagLine` | `lemaComercial` | TEXT | ANYONE |
+| `description` | `descripcion` | RICH_TEXT | ANYONE |
+| `price` | `precio` | NUMBER | ANYONE |
+| `durationInMinutes` | `duracionEnMinutos` | NUMBER | ANYONE |
+| `mainMedia` | `principalMultimedia` | IMAGE | ANYONE |
+| `internalGroup` | `internoGrupo` | TEXT | ANYONE |
+| `categoriaAddon` | `categoriaComplemento` | TEXT | ANYONE |
+| `availableOnline` | `disponibleOnline` | BOOLEAN | ANYONE |
+| `maxQuantity` | `maximaCantidad` | NUMBER | ANYONE |
+| `active` | `activo` | BOOLEAN | ANYONE |
+| `status` | `estado` | TEXT | ANYONE |
+| `location` | `localizacion` | REFERENCE | ANYONE |
+| `currency` | `moneda` | TEXT | ANYONE |
+| `type` | `tipo` | TEXT | ANYONE |
+| `ServiciosCatalogo_opcionesComplementos` | `serviciosCatalogoOpcionesComplementos` | MULTI_REFERENCE | ANYONE |
+
+## `DatosFiscales`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `businessName` | `negocioNombre` | TEXT | ADMIN / requerido |
+| `businessTaxId` | `negocioIdentificacionFiscal` | TEXT | ADMIN / cifrado |
+| `taxIdType` | `fiscalTipoIdentificacion` | TEXT | ADMIN |
+| `businessType` | `negocioTipo` | TEXT | ADMIN |
+| `taxRegime` | `fiscalRegimen` | TEXT | ADMIN |
+| `fiscalRegime` | `fiscalRegimen` | TEXT | ADMIN |
+| `vatRates` | `ivaTipos` | ARRAY_STRING | ADMIN |
+| `isSiiSubject` | `siiSujeto` | BOOLEAN | ADMIN |
+| `verifactuMode` | `verifactuModo` | TEXT | ADMIN |
+| `iaeActivityCode` | `iaeActividadCodigo` | TEXT | ADMIN |
+| `cnaeCode` | `cnaeCodigo` | TEXT | ADMIN |
+| `invoiceSeries` | `facturaSerie` | TEXT | ADMIN |
+| `currency` | `moneda` | TEXT | ADMIN |
+| `timeZone` | `zonaHoraria` | TEXT | ADMIN |
+| `streetAddress` | `calleDireccion` | TEXT | ADMIN |
+| `postalCode` | `postalCodigo` | TEXT | ADMIN |
+| `city` | `municipio` | TEXT | ADMIN |
+| `subdivision` | `provincia` | TEXT | ADMIN |
+| `country` | `pais` | TEXT | ADMIN |
+| `active` | `activo` | BOOLEAN | ADMIN / requerido |
+| `configVersion` | `configuracionVersion` | TEXT | ADMIN |
+
+## `ConfiguracionFiscal`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `fiscalRegime` | `fiscalRegimen` | TEXT | ADMIN |
+| `hashKeyReference` | `hashClaveReferencia` | TEXT | ADMIN |
+| `verifactuMode` | `verifactuModo` | TEXT | ADMIN |
+| `vatRates` | `ivaTipos` | ARRAY_STRING | ADMIN |
+| `businessAddress` | `negocioDireccion` | TEXT | ADMIN |
+| `businessProvince` | `negocioProvincia` | TEXT | ADMIN |
+| `businessCity` | `negocioMunicipio` | TEXT | ADMIN |
+| `businessPostalCode` | `negocioPostalCodigo` | TEXT | ADMIN |
+| `streetAddress` | `calleDireccion` | TEXT | ADMIN |
+| `businessTaxId` | `negocioIdentificacionFiscal` | TEXT | ADMIN |
+| `active` | `activo` | BOOLEAN | ADMIN |
+| `defaultInvoiceSeries` | `defectoFacturaSerie` | TEXT | ADMIN |
+| `taxRegime` | `fiscalRegimen` | TEXT | ADMIN |
+| `timeZone` | `zonaHoraria` | TEXT | ADMIN |
+| `currency` | `moneda` | TEXT | ADMIN |
+| `businessName` | `negocioNombre` | TEXT | ADMIN |
+| `taxId` | `fiscalId` | TEXT | ADMIN |
+| `postalCode` | `postalCodigo` | TEXT | ADMIN |
+| `city` | `municipio` | TEXT | ADMIN |
+| `subdivision` | `provincia` | TEXT | ADMIN |
+| `country` | `pais` | TEXT | ADMIN |
+| `isSiiSubject` | `siiSujeto` | BOOLEAN | ADMIN |
+| `configVersion` | `configuracionVersion` | TEXT | ADMIN |
+
+## `DualSlotCache`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `resourceId` | `recursoId` | TEXT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `expiresAt` | `expiraFecha` | DATETIME | ADMIN |
+| `dateYmd` | `fechaYmd` | TEXT | ADMIN |
+| `candidateResourceIds` | `candidatosRecursoIds` | ARRAY_STRING | ADMIN |
+| `phase2ServiceId` | `fase2ServicioId` | TEXT | ADMIN |
+| `phase1ServiceId` | `fase1ServicioId` | TEXT | ADMIN |
+| `serviceId` | `servicioId` | TEXT | ADMIN |
+| `pairToken` | `parToken` | TEXT | ADMIN |
+| `slotF1` | `franjaF1` | OBJECT | ADMIN |
+| `slotF2` | `franjaF2` | OBJECT | ADMIN |
+
+## `HistoricoCierresZ`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `totalTips` | `totalPropinas` | NUMBER | ADMIN |
+| `verifiedAt` | `verificadaFecha` | DATETIME | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `closedAt` | `cerradaFecha` | DATETIME | ADMIN |
+| `timeZone` | `zonaHoraria` | TEXT | ADMIN |
+| `closingSchemaVersion` | `cierreEsquemaVersion` | TEXT | ADMIN |
+| `closingSource` | `cierreOrigen` | TEXT | ADMIN |
+| `closingSignature` | `cierreFirma` | TEXT | ADMIN |
+| `closingHash` | `cierreHash` | TEXT | ADMIN |
+| `auditedRecordsCount` | `auditadosRegistrosCantidad` | NUMBER | ADMIN |
+| `isIntegrityVerified` | `integridadVerificada` | BOOLEAN | ADMIN |
+| `taxTypeBreakdown` | `impuestoTipoDesglose` | OBJECT | ADMIN |
+| `movementTypeBreakdown` | `movimientoTipoDesglose` | OBJECT | ADMIN |
+| `endRecordHash` | `finRegistroHash` | TEXT | ADMIN |
+| `startRecordHash` | `inicioRegistroHash` | TEXT | ADMIN |
+| `endTicketNumber` | `finTicketNumero` | TEXT | ADMIN |
+| `startTicketNumber` | `inicioTicketNumero` | TEXT | ADMIN |
+| `endSequence` | `finSecuencia` | NUMBER | ADMIN |
+| `startSequence` | `inicioSecuencia` | NUMBER | ADMIN |
+| `totalOperations` | `totalOperaciones` | NUMBER | ADMIN |
+| `totalAdjustments` | `totalAjustes` | NUMBER | ADMIN |
+| `netTaxAmount` | `netoImpuestoImporte` | NUMBER | ADMIN |
+| `totalRefunds` | `totalDevoluciones` | NUMBER | ADMIN |
+| `totalCard` | `totalTarjeta` | NUMBER | ADMIN |
+| `totalCash` | `totalEfectivo` | NUMBER | ADMIN |
+| `netTaxableAmount` | `netoGravableImporte` | NUMBER | ADMIN |
+| `grossSalesTotal` | `brutoVentasTotal` | NUMBER | ADMIN |
+| `consolidatedTotalAmount` | `consolidadoTotalImporte` | NUMBER | ADMIN |
+| `closingStatus` | `cierreEstado` | TEXT | ADMIN |
+| `operationDate` | `operacionFecha` | DATETIME | ADMIN |
+| `totalBizum` | `totalBizumImporte` | NUMBER | ADMIN |
+| `totalOnline` | `totalOnlineImporte` | NUMBER | ADMIN |
+
+## `InventarioStockVenta`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `sku` | `sku` | TEXT | ADMIN |
+| `lastInventoryMovementId` | `ultimoInventarioMovimientoId` | TEXT | ADMIN |
+| `lastInventoryMovementAt` | `ultimoInventarioMovimientoFecha` | DATETIME | ADMIN |
+| `active` | `activo` | BOOLEAN | ADMIN |
+| `needsWixReconciliation` | `necesitaWixConciliacion` | BOOLEAN | ADMIN |
+| `wixVariantId` | `wixVarianteId` | TEXT | ADMIN |
+| `wixProductId` | `wixProductoId` | TEXT | ADMIN |
+| `location` | `localizacion` | TEXT | ADMIN |
+| `reorderPoint` | `reposicionPunto` | NUMBER | ADMIN |
+| `lowStockAlert` | `bajoStockAlerta` | NUMBER | ADMIN |
+| `stockExpected` | `stockEsperado` | NUMBER | ADMIN |
+| `supplier` | `proveedor` | TEXT | ADMIN |
+| `costExTax` | `costeSinImpuesto` | NUMBER | ADMIN |
+| `salePriceTaxIncluded` | `ventaPrecioImpuestoIncluido` | NUMBER | ADMIN |
+| `category` | `categoria` | TEXT | ADMIN |
+| `description` | `descripcion` | TEXT | ADMIN |
+| `productName` | `productoNombre` | TEXT | ADMIN |
+
+## `M365GraphSyncQueue`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `failedAt` | `fallidoFecha` | DATETIME | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `attempts` | `intentos` | NUMBER | ADMIN |
+| `completedAt` | `completadoFecha` | DATETIME | ADMIN |
+| `nextAttemptAt` | `proximoIntentoFecha` | DATETIME | ADMIN |
+| `payloadHash` | `cargaHash` | TEXT | ADMIN |
+| `errorCode` | `errorCodigo` | TEXT | ADMIN |
+| `externalRecordId` | `externoRegistroId` | TEXT | ADMIN |
+| `status` | `estado` | TEXT | ADMIN |
+| `desiredPayload` | `deseadaCarga` | OBJECT | ADMIN |
+
+## `MapaStaff`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `displayName` | `nombre` | TEXT | ADMIN |
+| `lastSyncDate` | `ultimaSincronizacionFecha` | DATETIME | ADMIN |
+| `memberId` | `miembroId` | TEXT | ADMIN |
+| `location` | `localizacion` | TEXT | ADMIN |
+| `notes` | `notas` | TEXT | ADMIN |
+| `active` | `activo` | BOOLEAN | ADMIN |
+| `phone` | `telefono` | TEXT | ADMIN |
+| `locationId` | `localizacionId` | TEXT | ADMIN |
+| `scheduleId` | `horarioId` | TEXT | ADMIN |
+| `staffMemberId` | `personalMiembroId` | TEXT | ADMIN |
+| `email` | `correo` | TEXT | ADMIN |
+| `resourceId` | `recursoId` | TEXT | ADMIN |
+| `rolWebsite` | `rolWebsite` | TEXT | ADMIN |
+| `rolBookings` | `rolBookings` | TEXT | ADMIN |
+
+## `MovimientosInventario`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `quantity` | `cantidad` | NUMBER | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `wixVariantId` | `wixVarianteId` | TEXT | ADMIN |
+| `wixProductId` | `wixProductoId` | TEXT | ADMIN |
+| `nativeCommercialMovement` | `nativoComercialMovimiento` | BOOLEAN | ADMIN |
+| `requiresWixReconciliation` | `requiereWixConciliacion` | BOOLEAN | ADMIN |
+| `actorMemberId` | `actorMiembroId` | TEXT | ADMIN |
+| `actorEmail` | `actorCorreo` | TEXT | ADMIN |
+| `refundId` | `devolucionId` | TEXT | ADMIN |
+| `orderId` | `pedidoId` | TEXT | ADMIN |
+| `referenceId` | `referenciaId` | TEXT | ADMIN |
+| `reason` | `motivo` | TEXT | ADMIN |
+| `movementType` | `movimientoTipo` | TEXT | ADMIN |
+| `stockAfter` | `posteriorStock` | NUMBER | ADMIN |
+| `stockBefore` | `previoStock` | NUMBER | ADMIN |
+| `quantityDelta` | `cantidadVariacion` | NUMBER | ADMIN |
+| `sku` | `sku` | TEXT | ADMIN |
+| `productName` | `productoNombre` | TEXT | ADMIN |
+| `movementToken` | `movimientoToken` | TEXT | ADMIN |
+
+## `ProveedoresLista`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `active` | `activo` | BOOLEAN | ADMIN |
+| `notes` | `notas` | TEXT | ADMIN |
+| `advantages` | `ventajas` | TEXT | ADMIN |
+| `leadTime` | `entregaPlazo` | TEXT | ADMIN |
+| `freeShippingThresholdExTax` | `envioGratuitoUmbralSinImpuesto` | TEXT | ADMIN |
+| `minimumOrderExTax` | `pedidoMinimoSinImpuesto` | TEXT | ADMIN |
+| `commercialTermsSource` | `comercialesTerminosOrigen` | TEXT | ADMIN |
+| `supplierName` | `proveedorNombre` | TEXT | ADMIN |
+
+## `RegistrosHorariosStaff`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `displayName` | `nombre` | TEXT | ADMIN |
+| `journeyType` | `jornadaTipo` | TEXT | ADMIN |
+| `overtimeHours` | `extraHoras` | NUMBER | ADMIN |
+| `recordingName` | `registroNombre` | TEXT | ADMIN |
+| `staffMemberId` | `personalMiembroId` | TEXT | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `meta` | `meta` | OBJECT | ADMIN |
+| `signature` | `firma` | TEXT | ADMIN |
+| `deviceIpAddress` | `dispositivoIpDireccion` | TEXT | ADMIN |
+| `deviceIp` | `dispositivoIp` | TEXT | ADMIN |
+| `adjustmentReason` | `ajusteMotivo` | TEXT | ADMIN |
+| `registeredByMemberId` | `registradoPorMiembroId` | TEXT | ADMIN |
+| `registeredBy` | `registradoPor` | TEXT | ADMIN |
+| `employeeName` | `empleadoNombre` | TEXT | ADMIN |
+| `employeeIdentifier` | `empleadoIdentificador` | TEXT | ADMIN |
+| `type` | `tipo` | TEXT | ADMIN |
+| `clockEventType` | `fichajeEventoTipo` | TEXT | ADMIN |
+| `monthKey` | `mesClave` | TEXT | ADMIN |
+| `dayKey` | `diaClave` | TEXT | ADMIN |
+| `recordedTime` | `registradoHora` | TEXT | ADMIN |
+| `recordedAt` | `registradoFecha` | DATETIME | ADMIN |
+| `resourceId` | `recursoId` | TEXT | ADMIN |
+| `resourceName` | `recursoNombre` | TEXT | ADMIN |
+
+## `ServiciosCatalogo`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `serviceType` | `servicioTipo` | TEXT | SITE_MEMBER_AUTHOR |
+| `availableStaff` | `disponiblePersonal` | MULTI_REFERENCE | SITE_MEMBER_AUTHOR |
+| `location` | `localizacion` | TEXT | SITE_MEMBER_AUTHOR |
+| `internalNotes` | `internasNotas` | TEXT | SITE_MEMBER_AUTHOR |
+| `status` | `estado` | TEXT | SITE_MEMBER_AUTHOR |
+| `hidden` | `oculto` | BOOLEAN | SITE_MEMBER_AUTHOR |
+| `sku` | `sku` | TEXT | SITE_MEMBER_AUTHOR |
+| `inPersonPayment` | `presencialPago` | BOOLEAN | SITE_MEMBER_AUTHOR |
+| `onlinePayment` | `onlinePago` | BOOLEAN | SITE_MEMBER_AUTHOR |
+| `taxRate` | `fiscalTasa` | TEXT | SITE_MEMBER_AUTHOR |
+| `taxIncluded` | `impuestoIncluido` | BOOLEAN | SITE_MEMBER_AUTHOR |
+| `locationId` | `localizacionId` | TEXT | SITE_MEMBER_AUTHOR |
+| `buffer` | `margen` | NUMBER | SITE_MEMBER_AUTHOR |
+| `totalDuration` | `totalDuracion` | NUMBER | SITE_MEMBER_AUTHOR |
+| `phase2Duration` | `fase2Duracion` | NUMBER | SITE_MEMBER_AUTHOR |
+| `exposureDuration` | `exposicionDuracion` | NUMBER | SITE_MEMBER_AUTHOR |
+| `phase1Duration` | `fase1Duracion` | NUMBER | SITE_MEMBER_AUTHOR |
+| `categoryId` | `categoriaId` | TEXT | SITE_MEMBER_AUTHOR |
+| `mainMedia` | `principalMultimedia` | IMAGE | SITE_MEMBER_AUTHOR |
+| `depositAmount` | `depositoImporte` | NUMBER | SITE_MEMBER_AUTHOR |
+| `depositType` | `depositoTipo` | TEXT | SITE_MEMBER_AUTHOR |
+| `currency` | `moneda` | TEXT | SITE_MEMBER_AUTHOR |
+| `price` | `precio` | NUMBER | SITE_MEMBER_AUTHOR |
+| `pricingModel` | `tarificacionModelo` | TEXT | SITE_MEMBER_AUTHOR |
+| `description` | `descripcion` | RICH_TEXT | SITE_MEMBER_AUTHOR |
+| `tagLine` | `lemaComercial` | TEXT | SITE_MEMBER_AUTHOR |
+| `linkedPhases` | `enlazadasFases` | REFERENCE | SITE_MEMBER_AUTHOR |
+| `allowCombine` | `permitirCombinar` | BOOLEAN | SITE_MEMBER_AUTHOR |
+| `serviceId` | `servicioId` | REFERENCE | SITE_MEMBER_AUTHOR |
+| `slugUrl` | `slugUrl` | TEXT | SITE_MEMBER_AUTHOR |
+| `title` | `titulo` | TEXT | SITE_MEMBER_AUTHOR |
+| `opcionesComplementos` | `opcionesComplementos` | MULTI_REFERENCE | SITE_MEMBER_AUTHOR |
+
+## `MovimientosCajaConsolidada`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `movementType` | `movimientoTipo` | TEXT | ADMIN |
+| `movementSubtype` | `movimientoSubtipo` | TEXT | ADMIN |
+| `movementSource` | `movimientoOrigen` | TEXT | ADMIN |
+| `movementStatus` | `movimientoEstado` | TEXT | ADMIN |
+| `operationNature` | `operacionNaturaleza` | TEXT | ADMIN |
+| `operationDate` | `operacionFecha` | DATETIME | ADMIN |
+| `registeredAt` | `registradoFecha` | DATETIME | ADMIN |
+| `operationTimeZone` | `operacionZonaHoraria` | TEXT | ADMIN |
+| `fiscalYear` | `fiscalEjercicio` | NUMBER | ADMIN |
+| `fiscalPeriod` | `fiscalPeriodo` | TEXT | ADMIN |
+| `sequenceNumber` | `secuenciaNumero` | NUMBER | ADMIN |
+| `invoiceSeries` | `facturaSerie` | TEXT | ADMIN |
+| `invoiceNumber` | `facturaNumero` | TEXT | ADMIN |
+| `invoiceType` | `facturaTipo` | TEXT | ADMIN |
+| `documentId` | `documentoId` | TEXT | ADMIN |
+| `relatedDocumentId` | `relacionadoDocumentoId` | TEXT | ADMIN |
+| `relatedMovementId` | `relacionadoMovimientoId` | TEXT | ADMIN |
+| `linkedBookingId` | `vinculadaReservaId` | TEXT | ADMIN |
+| `transactionId` | `transaccionId` | TEXT | ADMIN |
+| `customerId` | `clienteId` | TEXT | ADMIN |
+| `clientName` | `clienteNombre` | TEXT | ADMIN |
+| `clientTaxId` | `clienteFiscalId` | TEXT | ADMIN |
+| `supplierId` | `proveedorId` | TEXT | ADMIN |
+| `memberId` | `miembroId` | TEXT | ADMIN |
+| `staffMemberId` | `personalMiembroId` | TEXT | ADMIN |
+| `responsibleMemberId` | `responsableMiembroId` | TEXT | ADMIN |
+| `resourceId` | `recursoId` | TEXT | ADMIN |
+| `cashRegisterId` | `cajaRegistroId` | TEXT | ADMIN |
+| `paymentMethod` | `pagoMetodo` | TEXT | ADMIN |
+| `paymentChannel` | `pagoCanal` | TEXT | ADMIN |
+| `paymentReference` | `pagoReferencia` | TEXT | ADMIN |
+| `movementDirection` | `movimientoDireccion` | TEXT | ADMIN |
+| `currency` | `moneda` | TEXT | ADMIN |
+| `totalAmount` | `totalImporte` | NUMBER | ADMIN |
+| `accountingAmount` | `contableImporte` | NUMBER | ADMIN |
+| `accountingSign` | `contableSigno` | NUMBER | ADMIN |
+| `taxableAmount` | `gravableImporte` | NUMBER | ADMIN |
+| `taxRate` | `fiscalTasa` | NUMBER | ADMIN |
+| `taxAmount` | `impuestoImporte` | NUMBER | ADMIN |
+| `taxTreatment` | `impuestoTratamiento` | TEXT | ADMIN |
+| `taxBreakdown` | `impuestoDesglose` | OBJECT | ADMIN |
+| `regimeKey` | `regimenClave` | TEXT | ADMIN |
+| `withholdingRate` | `retencionTasa` | NUMBER | ADMIN |
+| `withholdingAmount` | `retencionImporte` | NUMBER | ADMIN |
+| `equivalenceSurchargeRate` | `equivalenciaRecargoTasa` | NUMBER | ADMIN |
+| `equivalenceSurchargeAmount` | `equivalenciaRecargoImporte` | NUMBER | ADMIN |
+| `deductible` | `deducible` | BOOLEAN | ADMIN |
+| `lineItems` | `lineasArticulos` | OBJECT | ADMIN |
+| `description` | `descripcion` | TEXT | ADMIN |
+| `recordSource` | `registroOrigen` | TEXT | ADMIN |
+| `sourceId` | `origenId` | TEXT | ADMIN |
+| `reconciliationStatus` | `conciliacionEstado` | TEXT | ADMIN |
+| `reconciledAt` | `conciliadoFecha` | DATETIME | ADMIN |
+| `rectifiedInvoiceReference` | `rectificadaFacturaReferencia` | TEXT | ADMIN |
+| `rectificationReason` | `rectificacionMotivo` | TEXT | ADMIN |
+| `qrData` | `qrDatos` | TEXT | ADMIN |
+| `digitalSignature` | `digitalFirma` | TEXT | ADMIN |
+| `currentRecordHash` | `actualRegistroHash` | TEXT | ADMIN |
+| `previousRecordHash` | `anteriorRegistroHash` | TEXT | ADMIN |
+| `schemaIntegrityVersion` | `esquemaIntegridadVersion` | TEXT | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+
+## `MovimientosCajaConsolidada` — campos adicionales de sistema
+
+Incluye:
+
+```text
+_id: TEXT
+_createdDate: DATETIME
+_updatedDate: DATETIME
+_owner: TEXT
+```
+
+## `SlotLocks`
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `expiresAt` | `expiraFecha` | DATETIME | ADMIN |
+| `traceId` | `trazaId` | TEXT | ADMIN |
+| `slotKey` | `franjaClave` | TEXT | ADMIN |
+| `lockKey` | `bloqueoClave` | TEXT | ADMIN |
+
+---
+
+# 4. Relaciones
+
+| ID técnico | ID público | Tipo | Protección |
+|---|---|---|---|
+| `ServiciosCatalogo.opcionesComplementos` | `opcionesComplementos` | MULTI_REFERENCE | SITE_MEMBER_AUTHOR |
+| `ComplementosCatalogo.ServiciosCatalogo_opcionesComplementos` | `serviciosCatalogoOpcionesComplementos` | MULTI_REFERENCE | ANYONE |
+| `ServiciosCatalogo.availableStaff` | `disponiblePersonal` | MULTI_REFERENCE | SITE_MEMBER_AUTHOR |
+| `ServiciosCatalogo.linkedPhases` | `enlazadasFases` | REFERENCE | SITE_MEMBER_AUTHOR |
+| `ServiciosCatalogo.serviceId` | `servicioId` | REFERENCE | SITE_MEMBER_AUTHOR |
+| `ComplementosCatalogo.location` | `localizacion` | REFERENCE | ANYONE |
+
+---
+
+# 5. Seguridad y predespliegue
+
+- Las colecciones fiscales, contables, de caja, inventario y personal están restringidas a `ADMIN`.
+- `DatosFiscales.businessTaxId` está cifrado.
+- `ComplementosCatalogo` mantiene lectura `ANYONE`; debe revisarse la exposición de campos internos.
+- `RegistrosHorariosStaff` contiene IP, identificadores laborales y datos personales.
+- `DatosFiscales` y `ConfiguracionFiscal` tienen campos solapados; debe definirse una única fuente fiscal.
+- `ServiciosCatalogo.taxRate` es `TEXT`; si participa en cálculos debe normalizarse a `NUMBER`.
+- Los importes de `ProveedoresLista` están definidos como `TEXT`.
+- Las cachés, colas y bloqueos deben limpiarse al expirar.
+- Las referencias `REFERENCE` y `MULTI_REFERENCE` deben conservar sus metadatos nativos.
+
+## Dictamen
+
+La estructura queda documentada con los IDs técnicos actuales y los IDs públicos corregidos. En todos los campos de ubicación se aplica:
+
+```text
+location      → localizacion
+locationId    → localizacionId
+```
+
+Los campos técnicos no se modifican; solo se normalizan sus nombres públicos.

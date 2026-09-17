@@ -1,0 +1,16 @@
+Your identification has been saved in C:\Users\nacho/.ssh/id_ed25519
+Your public key has been saved in C:\Users\nacho/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:ZFXhhuF1oxVVml9DR/6BLySkp+iFFADzANm130BvRPY su_email@ejemplo.com
+The key's randomart image is:
++--[ED25519 256]--+
+| .++oo.o.+oo+.==*|
+| . .+ o =o+= +o=.|
+|     o oo+oE+oooo|
+|      oo* o.o ..=|
+|       +S+   . .o|
+|      . .     .  |
+|       .         |
+|                 |
+|                 |
++----[SHA256]-----+
