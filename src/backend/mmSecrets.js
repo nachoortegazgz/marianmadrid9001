@@ -1,0 +1,36 @@
+/*
+=============================================================================
+MODULE: backend/mmSecrets.js
+VERSION: v5007.4-FINAL
+BASE: BIBLIA v5002.5 + Gestor de secretos actual
+RESPONSIBILITY: Nombres canonicos de secretos Wix.
+STANDARDS: G10 ASCII Strict.
+=============================================================================
+*/
+
+export const SECRETS = Object.freeze({
+    FISCAL_KEY: "SECRET_FISCALKEY",
+    FISCAL_NIF_EMISOR: "FISCAL_NIF_EMISOR",
+
+    AUTH_JWT_KEY: "SECRET_AUTH_JWT_KEY",
+
+    ADMIN_EMAILS: "ADMIN_EMAILS",
+    CAJERO_EMAILS: "CAJERO_EMAILS",
+
+    POWER_AUTOMATE: "POWER_AUTOMATE_TOKEN",
+
+    SENDGRID_API_KEY: "SENDGRID_API_KEY",
+    SENDGRID_FROM_EMAIL: "SENDGRID_FROM_EMAIL",
+
+    RESEND_API_KEY: "RESEND_API_KEY",
+    RESEND_FROM_EMAIL: "RESEND_FROM_EMAIL",
+
+    MARIAN_ASSISTANT_OPENAI_KEY: "MARIAN_ASSISTANT_OPENAI_KEY",
+
+    M365_GRAPH_CLIENT_ID: "M365_CLIENT_ID",
+    M365_GRAPH_CLIENT_SECRET: "M365_CLIENT_SECRET",
+    M365_GRAPH_TENANT_ID: "M365_TENANT_ID",
+    M365_GRAPH_SITE_ID: "M365_GRAPH_SITE_ID",
+    M365_GRAPH_LIST_ID: "M365_LIST_ID",
+    M365_WEBHOOK_HMAC_KEY: "SECRET_M365_WEBHOOK_HMAC_KEY",
+});
