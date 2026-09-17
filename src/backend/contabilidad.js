@@ -169,7 +169,7 @@ function _isApprovedMap(map) {
 
 async function _findAccountMap(movementType) {
     const result = await wixData
-        .query(COLLECTIONS.PLAN_CUENTAS_CONTABLES)
+        .query(// COLLECTIONS.PLAN_CUENTAS_CONTABLES - ELIMINADA: no existe en SSOT)
         .eq(
             "categoriaOperacion",
             String(movementType || "").toUpperCase()
@@ -200,7 +200,7 @@ async function _getExisting(journalEntryId) {
 async function _insertLineIfMissing(line) {
     const existing = await wixData
         .get(
-            COLLECTIONS.LINEAS_ASIENTO_CONTABLE,
+            COLLECTIONS.LIBRO_ASIENTOS_CONTABLES_DETALLE,
             line._id, {
                 suppressAuth: true,
                 consistentRead: true,
@@ -216,7 +216,7 @@ async function _insertLineIfMissing(line) {
     }
 
     const inserted = await wixData.insert(
-        COLLECTIONS.LINEAS_ASIENTO_CONTABLE,
+        COLLECTIONS.LIBRO_ASIENTOS_CONTABLES_DETALLE,
         line, { suppressAuth: true }
     );
 

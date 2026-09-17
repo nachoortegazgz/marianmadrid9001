@@ -193,7 +193,7 @@ async function _computeSignature(fiscalKey, currentHash, payloadStr) {
 // ============================================================================
 
 async function _getNextSequence(traceId) {
-  const seqCol = COLLECTIONS.SECUENCIA_TICKETS;
+  const seqCol = // COLLECTIONS.SECUENCIA_TICKETS - ELIMINADA: no existe en SSOT;
   const lockOwnerId = `seq_${traceId || makeTraceId("seq")}`;
 
   const lockResult = await _lockSlotKeyOrFail(SEQUENCE_MUTEX_KEY, lockOwnerId, SEQUENCE_MUTEX_TTL_MS);
@@ -449,7 +449,7 @@ async function _updateCajaActual(movimiento, traceId) {
 
 async function _registerSystemEvent(movimiento, traceId) {
   try {
-    const eventCol = COLLECTIONS.EVENTOS_SISTEMA_FACTURACION;
+    const eventCol = // COLLECTIONS.EVENTOS_SISTEMA_FACTURACION - ELIMINADA: no existe en SSOT;
     const eventHashInput = `${movimiento.invoiceNumber}|${movimiento.currentRecordHash}`;
     const eventHash = await hashSHA256(eventHashInput);
 
@@ -492,8 +492,8 @@ async function _registerSystemEvent(movimiento, traceId) {
 
 async function _projectToAccounting(movimiento, traceId) {
   const asientosCol = COLLECTIONS.ASIENTOS_CONTABLES;
-  const lineasCol = COLLECTIONS.LINEAS_ASIENTO_CONTABLE;
-  const planCol = COLLECTIONS.PLAN_CUENTAS_CONTABLES;
+  const lineasCol = COLLECTIONS.LIBRO_ASIENTOS_CONTABLES_DETALLE;
+  const planCol = // COLLECTIONS.PLAN_CUENTAS_CONTABLES - ELIMINADA: no existe en SSOT;
 
   const mapRes = await wixData.query(planCol)
     .eq("operationCategory", movimiento.movementType)
@@ -822,7 +822,7 @@ export const registerXCount = webMethod(Permissions.SiteMember, async (diaKey, {
     const discrepancyAmount = _roundMoney(countedCash - expectedCash);
     const reconciliationStatus = Math.abs(discrepancyAmount) < 0.01 ? "CUADRADO" : "DESCUADRE";
 
-    const res = await wixData.insert(COLLECTIONS.CONTROL_PARCIAL_X, {
+    const res = await wixData.insert(// COLLECTIONS.CONTROL_PARCIAL_X - ELIMINADA: no existe en SSOT, {
       operationDate: cleanDiaKey,
       countedCash,
       expectedCash,

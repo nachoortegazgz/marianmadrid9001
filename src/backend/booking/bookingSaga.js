@@ -33,8 +33,8 @@ COLECCIONES QUE LEE: ServiciosCatalogo, MapaStaff, CitasF2, BookingTransactions
 HISTORIAL DE CAMBIOS:
   v5007.6 | 2026-09-14 | FIX EDITOR: restaurados 27 tokens corruptos por
           |            | stripping de _ y * (parse error 325:86, multiplicadores
-          |            |  60  1000, constantes LOCKTTLMS/HEARTBEATMS,
-          |            | COLLECTIONS.CITASF2/COMPENSACIONESPENDIENTES,
+          |             60  1000, constantes LOCKTTLMS/HEARTBEATMS,
+          |            | COLLECTIONS.CITAS_F2/COMPENSACIONES_PENDIENTES,
           |            | ERRORCODES.*, ESTADOPAGO., ESTADO_CITA.,
           |            | lockSlotKeyOrFail, renewLock, hashKey, safeTrim,
           |            | id COMP, strings PAIRTOKENPAYLOAD_MISMATCH y
@@ -114,8 +114,8 @@ const log = logger;
 
 const LOCKTTLMS = Number(CONCURRENCY?.MUTEX_TTL_MS) || 300000;
 const HEARTBEATMS = Number(CONCURRENCY?.HEARTBEAT_MS) || 15000;
-const CITASCOL = COLLECTIONS.CITASF2;
-const COMPENSACIONESCOL = COLLECTIONS.COMPENSACIONESPENDIENTES;
+const CITASCOL = COLLECTIONS.CITAS_F2;
+const COMPENSACIONESCOL = COLLECTIONS.COMPENSACIONES_PENDIENTES;
 
 // =============================================================================
 // BLOCK 1 - DETERMINISTIC PAIR TOKEN

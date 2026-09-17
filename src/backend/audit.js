@@ -5,7 +5,7 @@ VERSION: v5007.4-FIX-D3
 BASE: BIBLIA v5002.5 Bloque 12 + ESQUEMA CMS 4.28
 RESPONSIBILITY: Registro centralizado de auditoria operativa.
 STANDARDS: G10 ASCII Strict.
-COLECCION DESTINO: MmAuditLog.
+COLECCION DESTINO: ALERTAS_OPERATIVAS (reemplaza MmAuditLog eliminada).
 =============================================================================
 */
 
@@ -161,7 +161,7 @@ export async function logAuditEvent(
 
     try {
         await wixData.insert(
-            COLLECTIONS.MM_AUDIT_LOG,
+            COLLECTIONS.ALERTAS_OPERATIVAS,
             record, { suppressAuth: true }
         );
     } catch (error) {
@@ -200,7 +200,7 @@ export async function logAuditEventWithTimeout(
 
     try {
         const insertPromise = wixData.insert(
-            COLLECTIONS.MM_AUDIT_LOG,
+            COLLECTIONS.ALERTAS_OPERATIVAS,
             record, { suppressAuth: true }
         );
 

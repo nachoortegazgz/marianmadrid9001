@@ -364,7 +364,7 @@ async function _validateAccountingLineParent(item = {}) {
 export async function SecuenciaTickets_beforeUpdate(item) {
     const existing = await wixData
         .get(
-            COLLECTIONS.SECUENCIA_TICKETS,
+            // COLLECTIONS.SECUENCIA_TICKETS - ELIMINADA: no existe en SSOT,
             item?._id, { suppressAuth: true }
         )
         .catch(() => null);
