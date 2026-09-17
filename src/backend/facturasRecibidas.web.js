@@ -65,34 +65,12 @@ function _isValidNIF(nif) {
 // ============================================================================
 
 export const registerReceivedInvoice = webMethod(Permissions.SiteMember, async (payload) => {
-  const traceId = payload?.traceId || makeTraceId("rec-inv");
-  try {
-    await requireCajero(traceId);
-
-    const receptionNumber = _safeTrim(payload?.receptionNumber);
-    if (!receptionNumber) {
-      return { status: "ERROR", data: null, error: { code: "INVALID_RECEPTION_NUMBER", message: "receptionNumber requerido" } };
-    }
-
-    const existingRes = await wixData
-      .query(COLLECTIONS.LIBRO_REGISTRO_FACTURAS_RECIBIDAS)
-      .eq("receptionNumber", receptionNumber)
-      .limit(1)
-      .find({ suppressAuth: true });
-
-    if (existingRes?.items?.length > 0) {
-      return { status: "SUCCESS", data: existingRes.items[0], error: null, idempotent: true };
-    }
-
-    const supplierTaxId = _safeTrim(payload?.supplierTaxId).toUpperCase();
-    if (!_isValidNIF(supplierTaxId)) {
-      return { status: "ERROR", data: null, error: { code: "INVALID_NIF", message: "NIF proveedor invalido" } };
-    }
-
-    const supplierName = _safeTrim(payload?.supplierName);
-    if (!supplierName) {
-      return { status: "ERROR", data: null, error: { code: "INVALID_SUPPLIER", message: "supplierName requerido" } };
-    }
+  // BLOQUEO ARQUITECTÓNICO: Esta función requiere LIBRO_REGISTRO_FACTURAS_RECIBIDAS (eliminada del SSOT).
+  // Sin esta colección, no se puede garantizar el registro fiscal de facturas recibidas.
+  // IMPACTO: Módulo de facturas de proveedores deshabilitado.
+  // SOLUCIÓN REQUERIDA: (A) Re-crear colección LIBRO_REGISTRO_FACTURAS_RECIBIDAS en CMS, o (B) Eliminar esta funcionalidad del negocio.
+  throw new Error("MODULE_DISABLED: LIBRO_REGISTRO_FACTURAS_RECIBIDAS collection not found in SSOT");
+});
 
     const supplierInvoiceSeriesNumber = _safeTrim(payload?.supplierInvoiceSeriesNumber);
     if (!supplierInvoiceSeriesNumber) {
@@ -150,7 +128,7 @@ export const registerReceivedInvoice = webMethod(Permissions.SiteMember, async (
       _createdDate: new Date(),
     };
 
-    const saved = await wixData.insert(COLLECTIONS.LIBRO_REGISTRO_FACTURAS_RECIBIDAS, invoiceRecord, { suppressAuth: true });
+    const saved = await wixData.insert(// COLLECTIONS.LIBRO_REGISTRO_FACTURAS_RECIBIDAS - ELIMINADA: no existe en SSOT, invoiceRecord, { suppressAuth: true });
 
     await _generateExpenseAccountingEntry(saved, traceId);
 
@@ -194,7 +172,7 @@ export const registerReceivedInvoice = webMethod(Permissions.SiteMember, async (
 async function _generateExpenseAccountingEntry(invoice, traceId) {
   try {
     const asientosCol = COLLECTIONS.ASIENTOS_CONTABLES;
-    const lineasCol = COLLECTIONS.LINEAS_ASIENTO_CONTABLE;
+    const lineasCol = COLLECTIONS.LIBRO_ASIENTOS_CONTABLES_DETALLE;
 
     const journalEntryId = `GASTO_${invoice.receptionNumber}`;
     const totalDebit = _roundMoney(invoice.totalInvoiceAmount);
@@ -325,7 +303,7 @@ export const listReceivedInvoices = webMethod(Permissions.SiteMember, async (opt
     const fiscalPeriod = _safeTrim(options?.fiscalPeriod);
     const supplierTaxId = _safeTrim(options?.supplierTaxId);
 
-    let query = wixData.query(COLLECTIONS.LIBRO_REGISTRO_FACTURAS_RECIBIDAS);
+    let query = wixData.query(// COLLECTIONS.LIBRO_REGISTRO_FACTURAS_RECIBIDAS - ELIMINADA: no existe en SSOT);
 
     if (fiscalYear) query = query.eq("fiscalYear", fiscalYear);
     if (fiscalPeriod) query = query.eq("fiscalPeriod", fiscalPeriod);

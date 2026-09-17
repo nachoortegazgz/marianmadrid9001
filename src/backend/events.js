@@ -63,7 +63,7 @@ function _normalizeBookingIds(value) {
 }
 
 // [R2-13] Sin fallback string
-const PROCESSED_EVENTS_COL = COLLECTIONS.MM_PROCESSED_EVENTS;
+const PROCESSED_EVENTS_COL = COLLECTIONS.ALERTAS_OPERATIVAS;
 const EVENT_TTL_HOURS = 72;
 
 // ============================================================================

@@ -89,7 +89,7 @@ async function _findCitaByBookingId(bookingId) {
 
 async function _logAuditEvent(tipoEvento, level, message, data = {}, traceId, entityId = "system") {
     try {
-        await wixData.insert(COLLECTIONS.MM_AUDIT_LOG, {
+        await wixData.insert(COLLECTIONS.ALERTAS_OPERATIVAS, {
             _id: `AUDIT_${_safeTrim(tipoEvento).slice(0, 30)}_${_safeTrim(entityId).slice(0, 20)}_${Date.now()}`,
             eventType: tipoEvento,
             level,

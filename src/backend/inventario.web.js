@@ -52,7 +52,7 @@ import { SECRETS } from "backend/mmSecrets";
 const log = logger;
 const INVENTARIO_COL = COLLECTIONS.INVENTARIO_STOCK_VENTA;
 const MOVIMIENTOS_INV_COL = COLLECTIONS.MOVIMIENTOS_INVENTARIO;
-const CIERRE_INV_COL = COLLECTIONS.INVENTARIO_STOCK_VENTA_CIERRE;
+const CIERRE_INV_COL = COLLECTIONS.HISTORICO_CIERRES_Z;
 
 // =============================================================================
 // BLOQUE 1 - GET INVENTORY DASHBOARD
